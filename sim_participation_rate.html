@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Simulering av förändrat arbetskraftsdeltagande</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Gabriel Juutinen</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Hem</a>
+</li>
+<li>
+  <a href="cv.html">CV</a>
+</li>
+<li>
+  <a href="sim_participation_rate.html">Simulering: Deltaganderespons</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Simulering av förändrat arbetskraftsdeltagande</h1>
+
+</div>
+
+
+<p><br/> <br/> <br/></p>
+<p>Nedan räknesnurra kan användas för att skatta förändringen i arbetskraftsdeltagandet i en fiktiv population. <br/> (<strong>Notera</strong> att den rödmarkerade arean under grafen i figuren markerar minskning av arbetskraftsdeltagandet medan ljusblått markerar en ökning av deltagadnet.) <br/></p>
+<iframe src="https://gaj96.shinyapps.io/participation_rate_sim/?showcase=0" width="672" height="450">
+</iframe>
+<p><br/> <br/></p>
+<div id="teoretiskt-ramverk" class="section level3">
+<h3>Teoretiskt ramverk</h3>
+<p>Anta en förenklad fast-kostnads-modell (efter Cogan (1981)) av hushållets arbetskraftsdeltagandebeslut, beslutet över om hushållet ska ingå i arbetskraften eller inte. <br/> I denna förenklade modell antas populationen vara homogen i alla aspekter förutom den nyttokostnad som hushållen associerar med arbete. Denna nyttokostnad, betecknad <span class="math inline">\(q\)</span>, fångar all den olägenhet som arbete kan tänkas medföra för hushållet. (Juutinen 2020, s. 5-8) <br/> Låt <span class="math inline">\(Y-T\)</span> beteckna hushållets nettoinkomst vid valet att ingå i arbetskraften och <span class="math inline">\(B\)</span> hushållets nettoinkomst vid valet att inte ingå i arbetskraften. Bortse från risken för arbetslöshet så att <span class="math inline">\(Y-T\)</span> kan ses som nettolönen och <span class="math inline">\(B\)</span> som bidrag til icke-arbetande. Anta vidare att marginalnyttan av konsumtion är konstant och lika med <span class="math inline">\(1\)</span>. Skillnaden i nytta mellan de två valen ges nu av <span class="math display">\[
+U(Y-T) - U(B) = k(Y-T)+m - k(B)-m =
+\]</span> <span class="math display">\[
+=k(Y-T-B) = Y-T-B.
+\]</span> Om skillnaden i nytta mellan arbete och icke-arbete (<span class="math inline">\(Y-T-B\)</span>) överstiger nyttokostnaden (<span class="math inline">\(q\)</span>) så är det mest gynnsamma valet, ur hushållets synpunkt, att välja att arbeta (och vice versa). Låt <span class="math inline">\(q\)</span> följa en viss fördelnign i populationen (se figuren ovan). De hushåll för vilka <span class="math inline">\(Y-T-B&gt;q\)</span> är uppfyllt (markerat med knallblått i figuren) deltar i arbetskraften. Om skillnaden mellan disponibel inkomst vid arbete och icke-arbete ökar, genom lägre skatt på arbete <span class="math inline">\(T\)</span> eller lägre bidragen vid icke-arbete <span class="math inline">\(B\)</span>, så kommer villkoret <span class="math inline">\(Y-T-B&gt;q\)</span> att vara uppfyllt för fler hushåll och en större andel av populationen kommer alltså att välja att ingå i arbetskraften. Om denna nyttoskillnad går mot oändligheten så kommer arean under grafen att närma sig <span class="math inline">\(1\)</span>. Det skulle innebära att arbetskraften beståd av <span class="math inline">\(100\)</span> procent av populationen <span class="math inline">\(L\)</span>. (ibid.) <br/> Ökar vi skillnaden i nettoinkomst mellan arbete och icke-arbete med en procent (<span class="math inline">\(\frac{\delta (Y-T-B)}{Y-T-B} = 0.01\)</span>), och responsen på arbetskraftsdeltagandet blir en ökning med <span class="math inline">\(\delta L\)</span> enheter så att deltagandet ökar i relativa termer med <span class="math inline">\(\frac{\delta L}{L}\)</span> procent, så säger vi att arbetskrafsdeltagande-elasticiteten <span class="math inline">\(\epsilon\)</span> ges av <span class="math display">\[
+\epsilon = \frac{ \frac{\delta L}{L} }{ \frac{\delta (Y-T-B)}{Y-T-B} }.
+\]</span> Ovan uttryck är ekvivalent med uttrycket <span class="math display">\[
+\delta L = \epsilon \frac{\delta (Y-T-B)}{Y-T-B} L
+\]</span> som anger förändringen i andelen av populationen som deltar i arbetskraften, det så kallade arbetskraftsdeltagandet. (ibid.) <br/> <br/> Anta en reform av bidragen <span class="math inline">\(B\)</span>, vad blir effekten på arbetskrafsdeltagandet? I räknesnurran ovan antar arbetskrafsdeltagandet (<span class="math inline">\(L\)</span>) en baseline nivå på <span class="math inline">\(0.5\)</span>, elasticiteten <span class="math inline">\(\epsilon\)</span> antar värdet <span class="math inline">\(0.1\)</span> och <span class="math inline">\(Y-T\)</span> antar värdet <span class="math inline">\(20\)</span> tkr. Innan reformen antar <span class="math inline">\(B\)</span> värdet <span class="math inline">\(10\)</span> tkr och <span class="math inline">\(15\)</span> efter reformen. Enligt modellen kommer en sådan reform, givet dessa värden på övriga variabler, att leda till en minskning av arbetskraftsdeltagandet med <span class="math inline">\(2.5\)</span> procentenheter från baseline <span class="math inline">\(0.5\)</span> till <span class="math inline">\(0.475\)</span> <span class="math display">\[
+0.1\frac{(20-15)-(20-10)}{20-10}0.5 = -0.025
+\]</span> vilket överensstämmer med <em>Föränd. i deltagandegrad (%-enheter)</em> i tabellen ovan. <br/> <br/> <br/> <br/> <br/> <br/></p>
+</div>
+<div id="referenser" class="section level3">
+<h3>Referenser</h3>
+<p>Cogan, John F. (1981). <em>Fixed Costs and Labor Supply</em>. Econometrica, 49(4), 945–963. <br/> URL: <a href="http://www.jstor.org/stable/1912512" class="uri">http://www.jstor.org/stable/1912512</a> <br/></p>
+<p>Juutinen, G. (2020). <em>Mellan bistånd och arbete - Simulering av förväntade förändringar i försörjningsstödstagares arbetskraftsdeltagande vid utökad jobbstimulans</em>. (Examensarbete C HT2019). Uppsala univeritet, Nationalekonomiska intitutionen. <br/> URL: <a href="http://urn.kb.se/resolve?urn=urn:nbn:se:uu:diva-403697" class="uri">http://urn.kb.se/resolve?urn=urn:nbn:se:uu:diva-403697</a> <br/></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

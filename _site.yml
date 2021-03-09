@@ -1,0 +1,14 @@
+name: "Gabriel Juutinen"
+navbar:
+  title: "Gabriel Juutinen"
+  left:
+    - text: "Hem"
+      href: index.html
+    - text: "CV"
+      href: cv.html
+    - text: "Simulering: Deltaganderespons"
+      href: sim_participation_rate.html
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate
